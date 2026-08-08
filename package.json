@@ -1,0 +1,26 @@
+{
+  "name": "e-commurse",
+  "version": "1.0.0",
+  "description": "A Place That you can buy any electronic device",
+  "license": "ISC",
+  "author": "Abdelrahman",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.1",
+    "typescript": "^7.0.2"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "nodemon": "^3.1.14",
+    "tsx": "^4.23.11"
+  }
+}
