@@ -1,7 +1,11 @@
 import express, { type Express } from "express";
 import mongoose from "mongoose";
+
+//* Import routers
 import userRoute from "./routes/userRoute.js";
-import productRouter from "./routes/productRoute.js";
+import productRoute from "./routes/productRoute.js";
+import cartRoute from "./routes/cartRoute.js";
+
 import { seedInitialProducts } from "./services/productServices.js";
 
 const app: Express = express();
@@ -14,9 +18,10 @@ mongoose
   .then(() => console.log("Mongo DB Connected"))
   .catch((error: any) => console.log("Mongo DB Connection error : ", error));
 
-//* Add Routers
+//* Use Routers
 app.use("/user", userRoute);
-app.use("/product", productRouter);
+app.use("/product", productRoute);
+app.use("/cart", cartRoute);
 
 //* Seed Products To Database
 seedInitialProducts();

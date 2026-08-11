@@ -2,7 +2,7 @@ import userModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-interface registerParams {
+interface RegisterParams {
   firstName: string;
   lastName: string;
   email: string;
@@ -14,7 +14,7 @@ export const register = async ({
   lastName,
   email,
   password,
-}: registerParams) => {
+}: RegisterParams) => {
   const findUser = await userModel.findOne({ email });
   if (findUser) {
     return { data: "User already exists!", status: 400 };
@@ -31,12 +31,12 @@ export const register = async ({
   return { data: generateJWT({firstName: newUser.firstName, lastName: newUser.lastName, email}), status: 201 };
 };
 
-interface loginParams {
+interface LoginParams {
   email: string;
   password: string;
 }
 
-export const login = async ({ email, password }: loginParams) => {
+export const login = async ({ email, password }: LoginParams) => {
   const findUser = await userModel.findOne({ email });
   if (!findUser) {
     return { data: "Invalid email or password", status: 400 };
@@ -44,7 +44,7 @@ export const login = async ({ email, password }: loginParams) => {
 
   const passwordMatch = await bcrypt.compare(password, findUser.password);
   if (passwordMatch) {
-    return { data: generateJWT({fristName: findUser.firstName, lastName: findUser.lastName, email}), status: 200 };
+    return { data: generateJWT({firstName: findUser.firstName, lastName: findUser.lastName, email}), status: 200 };
   }
 
   return { data: "Invalid email or password", status: 400 };
