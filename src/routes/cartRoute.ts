@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addItemToCart,
+  clearCart,
   deleteItemFromCart,
   getActiveCartForUser,
   updateItemInCart,
@@ -20,6 +21,13 @@ router.get("/", validateJWT, async (req: ExtendedRequest, res) => {
     res.status(500).send({ message: "Error fetching cart", error });
   }
 });
+
+//*Clear cart 
+router.delete("/", validateJWT, async (req:ExtendedRequest, res) => {
+  const userId = req?.user?._id;
+  const response = await clearCart({userId});
+  res.status(response.statusCode).send(response.data);
+})
 
 //*Add new items to current cart & create a new active cart if user doesn't have one
 router.post("/items", validateJWT, async (req: ExtendedRequest, res) => {

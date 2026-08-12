@@ -15,6 +15,7 @@ interface GetActiveCartForUser {
   userId: string;
 }
 
+//*Make one cart for user only if user doesn't have an active one
 export const getActiveCartForUser = async ({
   userId,
 }: GetActiveCartForUser) => {
@@ -27,6 +28,7 @@ export const getActiveCartForUser = async ({
   return cart;
 };
 
+//*Add items to current cart
 interface AddItemToCart {
   productId: any;
   quantity: number;
@@ -76,6 +78,7 @@ export const addItemToCart = async ({
   return { data: updatedCart, statusCode: 200 };
 };
 
+//* Update item in current cart
 interface UpdateItemInCart {
   productId: any;
   quantity: number;
@@ -117,6 +120,19 @@ export const updateItemInCart = async ({
 
   cart.totalAmount = total;
 
+  const updatedCart = await cart.save();
+  return { data: updatedCart, statusCode: 200 };
+};
+
+//* Clear the current active cart
+interface ClearCart {
+  userId: string;
+}
+
+export const clearCart = async ({ userId }: ClearCart) => {
+  const cart = await getActiveCartForUser({ userId });
+  cart.items = [];
+  cart.totalAmount = 0;
   const updatedCart = await cart.save();
   return { data: updatedCart, statusCode: 200 };
 };
