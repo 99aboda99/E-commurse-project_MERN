@@ -1,5 +1,4 @@
-import type { ObjectId } from "mongoose";
-import { cartModel } from "../models/cartModel.js";
+import { type ICartItem, cartModel } from "../models/cartModel.js";
 import productModel from "../models/productModel.js";
 
 interface CreateCartForUser {
@@ -56,10 +55,10 @@ export const addItemToCart = async ({
 
   if (!product) {
     return { data: "Product not found", statusCode: 400 };
-  };
+  }
 
-  if(product.stock < quantity) {
-    return {data: "Low stock for items", statusCode: 400}
+  if (product.stock < quantity) {
+    return { data: "Low stock for item", statusCode: 400 };
   }
 
   cart.items.push({
@@ -75,4 +74,90 @@ export const addItemToCart = async ({
   const updatedCart = await cart.save();
 
   return { data: updatedCart, statusCode: 200 };
+};
+
+interface UpdateItemInCart {
+  productId: any;
+  quantity: number;
+  userId: string;
+}
+
+export const updateItemInCart = async ({
+  productId,
+  quantity,
+  userId,
+}: UpdateItemInCart) => {
+  const cart = await getActiveCartForUser({ userId });
+  const existedItem = cart.items.find(
+    (cartItem) => cartItem.product.toString() === productId,
+  );
+
+  if (!existedItem) {
+    return { data: "Item doesn't exist in cart", statusCode: 400 };
+  }
+
+  const product = await productModel.findById(productId);
+  if (!product) {
+    return { data: "Product not found", statusCode: 400 };
+  }
+
+  if (product.stock < quantity) {
+    return { data: "Low stock for item", statusCode: 400 };
+  }
+
+  //Calculate the total amount
+  const otherCartItems = cart.items.filter(
+    (p) => p.product.toString() !== productId,
+  );
+
+  let total = calculateTotalAmount({ cartItems: otherCartItems });
+
+  existedItem.quantity = quantity;
+  total += existedItem.quantity * existedItem.unitPrice;
+
+  cart.totalAmount = total;
+
+  const updatedCart = await cart.save();
+  return { data: updatedCart, statusCode: 200 };
+};
+
+//* Delete item from cart
+interface DeleteItemFromCart {
+  userId: string;
+  productId: any;
+}
+
+export const deleteItemFromCart = async ({
+  userId,
+  productId,
+}: DeleteItemFromCart) => {
+  const cart = await getActiveCartForUser({ userId });
+  const existedItem = cart.items.find(
+    (cartItem) => cartItem.product.toString() === productId,
+  );
+  if (!existedItem) {
+    return { data: "Item doesn't exist in cart", statusCode: 400 };
+  }
+
+  //Set the cart items to all items except the one to be deleted
+  const otherCartItems = cart.items.filter(
+    (p) => p.product.toString() !== productId,
+  );
+
+  cart.items = otherCartItems;
+
+  //Calculate the total amount
+
+  cart.totalAmount = calculateTotalAmount({ cartItems: otherCartItems });
+
+  const updatedCart = await cart.save();
+  return { data: updatedCart, statusCode: 200 };
+};
+
+const calculateTotalAmount = ({ cartItems }: { cartItems: ICartItem[] }) => {
+  const total = cartItems.reduce((sum, item) => {
+    sum += item.quantity * item.unitPrice;
+    return sum;
+  }, 0);
+  return total;
 };
