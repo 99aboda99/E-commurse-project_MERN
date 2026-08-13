@@ -28,7 +28,15 @@ export const register = async ({
     password: hashedPassword,
   });
   await newUser.save();
-  return { data: generateJWT({firstName: newUser.firstName, lastName: newUser.lastName, email}), status: 201 };
+  return {
+    data: generateJWT({
+      _id: newUser._id,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email,
+    }),
+    status: 201,
+  };
 };
 
 interface LoginParams {
@@ -44,12 +52,22 @@ export const login = async ({ email, password }: LoginParams) => {
 
   const passwordMatch = await bcrypt.compare(password, findUser.password);
   if (passwordMatch) {
-    return { data: generateJWT({firstName: findUser.firstName, lastName: findUser.lastName, email}), status: 200 };
+    return {
+      data: generateJWT({
+        _id: findUser._id,
+        firstName: findUser.firstName,
+        lastName: findUser.lastName,
+        email,
+      }),
+      status: 200,
+    };
   }
 
   return { data: "Invalid email or password", status: 400 };
 };
 
 const generateJWT = (data: any) => {
-  return jwt.sign(data, "XuFgxZy4ORSICQEaWfWXvbM/1IZp20EQfsXPZG7M9rw=");
+  const secretKey =
+    process.env.JWT_SECRET_KEY ||"";
+  return jwt.sign(data, secretKey);
 };

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addItemToCart,
+  checkout,
   clearCart,
   deleteItemFromCart,
   getActiveCartForUser,
@@ -18,16 +19,22 @@ router.get("/", validateJWT, async (req: ExtendedRequest, res) => {
     const cart = await getActiveCartForUser({ userId });
     res.status(200).send(cart);
   } catch (error) {
-    res.status(500).send({ message: "Error fetching cart", error });
+    console.error("Cart Route Error:", error);
+    res.status(500).send({ message: "Something went wrong", error });
   }
 });
 
-//*Clear cart 
-router.delete("/", validateJWT, async (req:ExtendedRequest, res) => {
-  const userId = req?.user?._id;
-  const response = await clearCart({userId});
-  res.status(response.statusCode).send(response.data);
-})
+//*Clear cart
+router.delete("/", validateJWT, async (req: ExtendedRequest, res) => {
+  try {
+    const userId = req?.user?._id;
+    const response = await clearCart({ userId });
+    res.status(response.statusCode).send(response.data);
+  } catch (error) {
+    console.error("Cart Route Error:", error);
+    res.status(500).send({ message: "Something went wrong", error });
+  }
+});
 
 //*Add new items to current cart & create a new active cart if user doesn't have one
 router.post("/items", validateJWT, async (req: ExtendedRequest, res) => {
@@ -37,7 +44,8 @@ router.post("/items", validateJWT, async (req: ExtendedRequest, res) => {
     const response = await addItemToCart({ userId, productId, quantity });
     res.status(response.statusCode).send(response.data);
   } catch (error) {
-    res.status(500).send({ message: "Can't fetch products", error });
+    console.error("Cart Route Error:", error);
+    res.status(500).send({ message: "Something went wrong", error });
   }
 });
 
@@ -49,7 +57,8 @@ router.put("/items", validateJWT, async (req: ExtendedRequest, res) => {
     const response = await updateItemInCart({ userId, productId, quantity });
     res.status(response.statusCode).send(response.data);
   } catch (error) {
-    res.status(500).send({ message: "Can't add items now", error });
+    console.error("Cart Route Error:", error);
+    res.status(500).send({ message: "Something went wrong", error });
   }
 });
 
@@ -64,8 +73,22 @@ router.delete(
       const response = await deleteItemFromCart({ userId, productId });
       res.status(response.statusCode).send(response.data);
     } catch (error) {
-      res.status(500).send({ message: "Can't delete items now", error });
+      res.status(500).send({ message: "Something went wrong", error });
     }
   },
 );
+
+//* Create checkout
+
+router.post("/checkout", validateJWT, async (req: ExtendedRequest, res) => {
+  try {
+    const userId = req?.user?._id;
+    const { address } = req.body;
+    const response = await checkout({ userId, address });
+    res.status(response.statusCode).send(response.data);
+  } catch (error) {
+    console.error("Cart Route Error:", error);
+    res.status(500).send({ message: "Something went wrong", error });
+  }
+});
 export default router;

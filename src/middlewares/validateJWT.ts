@@ -19,8 +19,7 @@ const validateJWT = async (req: ExtendedRequest, res: Response, next: NextFuncti
   }
 
   jwt.verify(
-    token,
-    "XuFgxZy4ORSICQEaWfWXvbM/1IZp20EQfsXPZG7M9rw=",
+    token,process.env.JWT_SECRET_KEY || "",
     async (err, payload) => {
       if (err) {
         res.status(403).send("Invalid token");

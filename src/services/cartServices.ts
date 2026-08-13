@@ -1,4 +1,5 @@
 import { type ICartItem, cartModel } from "../models/cartModel.js";
+import { orderModel, type IOrderItem } from "../models/orderModel.js";
 import productModel from "../models/productModel.js";
 
 interface CreateCartForUser {
@@ -70,8 +71,7 @@ export const addItemToCart = async ({
   });
 
   //* Sync totalAmount
-
-  cart.totalAmount += product.price * 2;
+  cart.totalAmount += product.price * quantity;
 
   const updatedCart = await cart.save();
 
@@ -176,4 +176,50 @@ const calculateTotalAmount = ({ cartItems }: { cartItems: ICartItem[] }) => {
     return sum;
   }, 0);
   return total;
+};
+
+//*Checkout for the cart
+interface Checkout {
+  userId: string;
+  address: string;
+}
+
+export const checkout = async ({ userId, address }: Checkout) => {
+  const cart = await getActiveCartForUser({ userId });
+
+  if(!address) {
+    return{data: "Please enter your address", statusCode: 400}
+  }
+
+  if(cart.items.length === 0) {
+    return{data: "Your cart is empty", statusCode: 400}
+  }
+
+  // Populate product details for each cart item
+  await cart.populate("items.product");
+
+  //* Loop to add cart item to OrderItem model
+  const orderItems: IOrderItem[] = [];
+  for (const items of cart.items) {
+    const orderItem: IOrderItem = {
+      productTitle: items.product.title,
+      productImage: items.product.image,
+      unitPrice: items.unitPrice,
+      quantity: items.quantity,
+    };
+    orderItems.push(orderItem);
+  }
+
+  //*create order
+  const order = await orderModel.create({
+    orderItems: orderItems,
+    totalAmount: cart.totalAmount,
+    address,
+    userId,
+  });
+  cart.status = "completed";
+
+  const checkout = await cart.save();
+
+  return {data: order, statusCode: 200}
 };
