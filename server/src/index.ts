@@ -10,10 +10,20 @@ import cartRoute from "./routes/cartRoute.js";
 
 import { seedInitialProducts } from "./services/productServices.js";
 
+//* Import cors
+import cors from "cors";
+
 dotenv.config();
 
 const app: Express = express();
 const port: number = 3001;
+
+//* CORS configuration (Must be BEFORE routes)
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 app.use(express.json());
 
@@ -31,5 +41,5 @@ app.use("/cart", cartRoute);
 seedInitialProducts();
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
