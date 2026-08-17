@@ -42,6 +42,12 @@ const Navbar = () => {
         </a>
         <a
           className="text-white font-medium py-1.5 px-4 hover:bg-white hover:text-black rounded-full transition-all duration-200"
+          href="/register"
+        >
+          Register
+        </a>
+        <a
+          className="text-white font-medium py-1.5 px-4 hover:bg-white hover:text-black rounded-full transition-all duration-200"
           href="/login"
         >
           Login
