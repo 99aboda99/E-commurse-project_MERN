@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
+import { useAuth } from "../context/Auth/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const {username, token} = useAuth()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -15,6 +17,9 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  console.log(`From navbar`, {username,token});
+  
 
   return (
     <div className="relative w-full h-17.5 bg-primary flex justify-between items-center flex-row z-40">

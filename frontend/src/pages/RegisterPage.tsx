@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { BASE_URL } from "../constants/baseUrl";
+import { useAuth } from "../context/Auth/AuthContext";
 
 const RegisterPage = () => {
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -7,7 +8,9 @@ const RegisterPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const[error, setError] = useState("")
+  const [error, setError] = useState("");
+
+  const { login } = useAuth();
 
   const onSubmit = async () => {
     const firstName = firstNameRef.current?.value;
@@ -15,6 +18,12 @@ const RegisterPage = () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     console.log(firstName, lastName, email, password);
+
+
+    //* Validate the user data
+    if(!firstName || !lastName || !email || !password) {
+      return setError("Check submitted data");
+    }
 
     const response = await fetch(`${BASE_URL}/user/register`, {
       method: "POST",
@@ -28,17 +37,26 @@ const RegisterPage = () => {
         password,
       }),
     });
-    const data = await response.json();
-    console.log(data);
 
     if (!response.ok) {
       setError("User already exist");
-      console.log(error)
+      console.log(error);
+      return;
     }
-  };
-  
-  return (
 
+    const token = await response.json();
+
+    if (!token) {
+      setError("Incorrect token");
+      return;
+    }
+
+    login(email, token);
+
+    console.log(token);
+  };
+
+  return (
     <main className="w-full h-[90vh] flex justify-center items-center">
       <section className="w-1/3 h-fit px-3 py-4 container mx-auto bg-white text-second-text rounded-xl shadow-md mt-10 font-medium">
         <h2 className="text-xl text-center mb-4">Register new account</h2>
