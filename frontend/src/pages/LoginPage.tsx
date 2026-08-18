@@ -3,9 +3,7 @@ import { BASE_URL } from "../constants/baseUrl";
 import { useAuth } from "../context/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const RegisterPage = () => {
-  const firstNameRef = useRef<HTMLInputElement>(null);
-  const lastNameRef = useRef<HTMLInputElement>(null);
+const LoginPage = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -16,32 +14,28 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const onSubmit = async () => {
-    const firstName = firstNameRef.current?.value;
-    const lastName = lastNameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    console.log(firstName, lastName, email, password);
+    console.log(email, password);
 
     //* Validate the user data
-    if (!firstName || !lastName || !email || !password) {
+    if (!email || !password) {
       return setError("Check submitted data");
     }
 
-    const response = await fetch(`${BASE_URL}/user/register`, {
+    const response = await fetch(`${BASE_URL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        firstName,
-        lastName,
         email,
         password,
       }),
     });
 
     if (!response.ok) {
-      setError("Unable to register, please check your credentials!");
+      setError("Unable to login, please check your credentials!");
       console.log(error);
       return;
     }
@@ -55,7 +49,7 @@ const RegisterPage = () => {
 
     login(email, token);
 
-    navigate("/");
+    navigate('/')
 
     console.log(token);
   };
@@ -63,28 +57,8 @@ const RegisterPage = () => {
   return (
     <main className="w-full h-[90vh] flex justify-center items-center">
       <section className="w-1/3 h-fit px-3 py-4 container mx-auto bg-white text-second-text rounded-xl shadow-md mt-10 font-medium">
-        <h2 className="text-xl text-center mb-4">Register new account</h2>
+        <h2 className="text-xl text-center mb-4">Login to your account</h2>
         <div className="flex flex-col gap-2.5">
-          <div>
-            <label className="block">First Name</label>
-            <input
-              ref={firstNameRef}
-              className="block border border-gray-500 rounded-md w-full font-normal p-1.5"
-              type="text"
-              name="firstName"
-              id="firstName"
-            />
-          </div>
-          <div>
-            <label className="block">Last Name</label>
-            <input
-              ref={lastNameRef}
-              className="block border border-gray-500 rounded-md w-full font-normal p-1.5"
-              type="text"
-              name="lastName"
-              id="lastName"
-            />
-          </div>
           <div>
             <label className="block">Email</label>
             <input
@@ -110,7 +84,7 @@ const RegisterPage = () => {
             type="submit"
             onClick={onSubmit}
           >
-            Register
+            Login
           </button>
           {error && (
             <div className="mt-2 text-red-500 text-center">{error}</div>
@@ -121,4 +95,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
