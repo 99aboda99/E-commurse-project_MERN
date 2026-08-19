@@ -1,13 +1,14 @@
+import { useCart } from "../context/Cart/CartContext";
+
 interface ProductCardProps {
+  _id: string;
   title: string;
   price: number;
   image: string;
 }
 
-const ProductCard = ({ title, price, image }: ProductCardProps) => {
-  const addToCart = () => {
-    return;
-  };
+const ProductCard = ({ _id, title, price, image }: ProductCardProps) => {
+  const { addItemToCart } = useCart();
 
   return (
     <div className="flex-1 grow shrink min-w-55 w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-0.75rem)] lg:w-[calc(25%-0.75rem)] xl:w-[calc(20%-0.75rem)] bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group border border-gray-100">
@@ -30,7 +31,7 @@ const ProductCard = ({ title, price, image }: ProductCardProps) => {
         </div>
 
         <button
-          onClick={addToCart}
+          onClick={() => addItemToCart(_id)}
           className="w-full bg-primary text-white py-2.5 px-4 rounded-xl font-medium text-sm sm:text-base hover:bg-secondary active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-md"
         >
           <svg
