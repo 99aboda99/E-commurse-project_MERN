@@ -14,13 +14,23 @@ const createCartForUser = async ({ userId }: CreateCartForUser) => {
 
 interface GetActiveCartForUser {
   userId: string;
+  populatedProduct?: boolean;
 }
 
 //*Make one cart for user only if user doesn't have an active one
 export const getActiveCartForUser = async ({
   userId,
+  populatedProduct,
 }: GetActiveCartForUser) => {
-  let cart = await cartModel.findOne({ userId, status: "active" });
+  let cart;
+
+  if (populatedProduct) {
+    cart = await cartModel
+      .findOne({ userId, status: "active" })
+      .populate("items.product");
+  } else {
+    cart = await cartModel.findOne({ userId, status: "active" });
+  }
 
   if (!cart) {
     cart = await createCartForUser({ userId });
@@ -73,9 +83,9 @@ export const addItemToCart = async ({
   //* Sync totalAmount
   cart.totalAmount += product.price * quantity;
 
-  const updatedCart = await cart.save();
+  await cart.save();
 
-  return { data: updatedCart, statusCode: 200 };
+  return { data: await getActiveCartForUser({userId, populatedProduct: true}), statusCode: 200 };
 };
 
 //* Update item in current cart
@@ -120,8 +130,8 @@ export const updateItemInCart = async ({
 
   cart.totalAmount = total;
 
-  const updatedCart = await cart.save();
-  return { data: updatedCart, statusCode: 200 };
+  await cart.save();
+  return { data: await getActiveCartForUser({userId, populatedProduct: true}), statusCode: 200 };
 };
 
 //* Clear the current active cart
@@ -166,8 +176,8 @@ export const deleteItemFromCart = async ({
 
   cart.totalAmount = calculateTotalAmount({ cartItems: otherCartItems });
 
-  const updatedCart = await cart.save();
-  return { data: updatedCart, statusCode: 200 };
+  await cart.save();
+  return { data: await getActiveCartForUser({userId, populatedProduct: true}), statusCode: 200 };
 };
 
 const calculateTotalAmount = ({ cartItems }: { cartItems: ICartItem[] }) => {
@@ -187,12 +197,12 @@ interface Checkout {
 export const checkout = async ({ userId, address }: Checkout) => {
   const cart = await getActiveCartForUser({ userId });
 
-  if(!address) {
-    return{data: "Please enter your address", statusCode: 400}
+  if (!address) {
+    return { data: "Please enter your address", statusCode: 400 };
   }
 
-  if(cart.items.length === 0) {
-    return{data: "Your cart is empty", statusCode: 400}
+  if (cart.items.length === 0) {
+    return { data: "Your cart is empty", statusCode: 400 };
   }
 
   // Populate product details for each cart item
@@ -221,5 +231,5 @@ export const checkout = async ({ userId, address }: Checkout) => {
 
   const checkout = await cart.save();
 
-  return {data: order, statusCode: 200}
+  return { data: order, statusCode: 200 };
 };
