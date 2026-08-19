@@ -1,10 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/Auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { username, isAuthenticated, logout } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleCart = () => navigate("/cart");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,64 +38,89 @@ const Navbar = () => {
 
       {/* User Avatar & Dropdown */}
       {isAuthenticated ? (
-        <div className="relative mr-5" ref={menuRef}>
+        <div className="flex flex-row">
           <button
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="flex items-center gap-2 p-1.5 text-white hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none cursor-pointer"
-            aria-label="User Menu"
+            onClick={handleCart}
+            className="relative text-white px-4 mr-1.5 hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none cursor-pointer"
           >
-            <span className="text-center my-auto font-medium">{username}</span>
-            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-900 text-white font-bold shrink-0">
-              {username ? username.charAt(0).toUpperCase() : "U"}
+            <svg
+              className="w-4 h-4 sm:w-6 sm:h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"
+              />
+            </svg>
+            <div className="absolute right-0 top-0 h-5.5 w-5.5 rounded-full bg-white text-primary text-center font-medium">
+              4
             </div>
           </button>
+          <div className="relative mr-5" ref={menuRef}>
+            <button
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              className="flex items-center gap-2 p-1.5 text-white hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none cursor-pointer"
+              aria-label="User Menu"
+            >
+              <span className="text-center my-auto font-medium">
+                {username}
+              </span>
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-900 text-white font-bold shrink-0">
+                {username ? username.charAt(0).toUpperCase() : "U"}
+              </div>
+            </button>
 
-          {isMenuOpen && (
-            <div className="absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-md text-gray-800 rounded-2xl shadow-xl border border-gray-100 py-2 z-50 transition-all duration-200">
-              <button
-                onClick={() => setIsMenuOpen(false)}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary rounded-xl mx-1 transition-colors cursor-pointer"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+            {isMenuOpen && (
+              <div className="absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-md text-gray-800 rounded-2xl shadow-xl border border-gray-100 py-2 z-50 transition-all duration-200">
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary rounded-xl mx-1 transition-colors cursor-pointer"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                  />
-                </svg>
-                My Orders
-              </button>
-              <div className="my-1 border-t border-gray-100" />
-              <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  logout();
-                }}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl mx-1 transition-colors cursor-pointer"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                    />
+                  </svg>
+                  My Orders
+                </button>
+                <div className="my-1 border-t border-gray-100" />
+                <button
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    logout();
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl mx-1 transition-colors cursor-pointer"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                  />
-                </svg>
-                Logout
-              </button>
-            </div>
-          )}
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         <div className="flex items-center gap-3 mr-5">
