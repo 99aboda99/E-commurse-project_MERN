@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/Cart/CartContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { username, isAuthenticated, logout } = useAuth();
+  const { cartItem } = useCart();
+  const [icon, setIcon ] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,6 +25,12 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (cartItem.length > 0) {
+      setIcon(true);
+    }
+  });
 
   return (
     <div className="relative w-full h-17.5 bg-primary flex justify-between items-center flex-row z-40">
@@ -56,9 +65,11 @@ const Navbar = () => {
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"
               />
             </svg>
-            <div className="absolute right-0 top-0 h-5.5 w-5.5 rounded-full bg-white text-primary text-center font-medium">
-              4
-            </div>
+            {icon && (
+              <div className="absolute right-0 top-0 h-5.5 w-5.5 rounded-full bg-white text-primary text-center font-medium">
+                {cartItem.length}
+              </div>
+            )}
           </button>
           <div className="relative mr-5" ref={menuRef}>
             <button
