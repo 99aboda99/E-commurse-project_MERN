@@ -85,7 +85,10 @@ export const addItemToCart = async ({
 
   await cart.save();
 
-  return { data: await getActiveCartForUser({userId, populatedProduct: true}), statusCode: 200 };
+  return {
+    data: await getActiveCartForUser({ userId, populatedProduct: true }),
+    statusCode: 200,
+  };
 };
 
 //* Update item in current cart
@@ -131,7 +134,10 @@ export const updateItemInCart = async ({
   cart.totalAmount = total;
 
   await cart.save();
-  return { data: await getActiveCartForUser({userId, populatedProduct: true}), statusCode: 200 };
+  return {
+    data: await getActiveCartForUser({ userId, populatedProduct: true }),
+    statusCode: 200,
+  };
 };
 
 //* Clear the current active cart
@@ -143,8 +149,11 @@ export const clearCart = async ({ userId }: ClearCart) => {
   const cart = await getActiveCartForUser({ userId });
   cart.items = [];
   cart.totalAmount = 0;
-  const updatedCart = await cart.save();
-  return { data: updatedCart, statusCode: 200 };
+  await cart.save();
+  return {
+    data: getActiveCartForUser({ userId, populatedProduct: true }),
+    statusCode: 200,
+  };
 };
 
 //* Delete item from cart
@@ -177,7 +186,10 @@ export const deleteItemFromCart = async ({
   cart.totalAmount = calculateTotalAmount({ cartItems: otherCartItems });
 
   await cart.save();
-  return { data: await getActiveCartForUser({userId, populatedProduct: true}), statusCode: 200 };
+  return {
+    data: await getActiveCartForUser({ userId, populatedProduct: true }),
+    statusCode: 200,
+  };
 };
 
 const calculateTotalAmount = ({ cartItems }: { cartItems: ICartItem[] }) => {

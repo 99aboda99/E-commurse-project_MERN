@@ -1,7 +1,8 @@
 import { useCart } from "../context/Cart/CartContext";
 
 const CartPage = () => {
-  const { cartItem, totalAmount, updateCartItem, deleteCartItem } = useCart();
+  const { cartItem, totalAmount, updateCartItem, deleteCartItem, clearCart } =
+    useCart();
 
   const handleSum = async ({ productId, quantity }) => {
     quantity += 1;
@@ -17,7 +18,15 @@ const CartPage = () => {
 
   return (
     <div className="w-4/5 m-auto bg-white py-5 mt-20 rounded-xl">
-      <h1 className="w-full text-center text-5xl">My Cart</h1>
+      <div className="flex flex-row items-center justify-evenly">
+        <h1 className="text-center text-5xl">My Cart</h1>
+        <button
+          className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600 transition-all duration-300"
+          onClick={() => clearCart()}
+        >
+          Clear Cart
+        </button>
+      </div>
       <br />
       {cartItem.map((item) => (
         <div className="flex flex-row justify-around items-center">
@@ -74,13 +83,18 @@ const CartPage = () => {
           </button>
         </div>
       ))}
-      {cartItem.length === 0 && (
+      {cartItem.length === 0 ? (
         <div className="flex flex-col items-center justify-center w-full py-10">
-          <img src="/empty-cart.png" alt="Your cart is empty" className="w-64 h-64 object-contain mb-4" />
-          <p className="text-xl font-semibold text-gray-600">Your cart is empty</p>
+          <img
+            src="/empty-cart.png"
+            alt="Your cart is empty"
+            className="w-64 h-64 object-contain mb-4"
+          />
+          <p className="text-xl font-semibold text-gray-600">
+            Your cart is empty
+          </p>
         </div>
-      )}
-      {cartItem.length !== 0 && (
+      ) : (
         <div className="font-bold text-2xl ml-5 mt-10">
           Total Amount: {totalAmount.toFixed(2)} EGP
         </div>
