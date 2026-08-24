@@ -8,7 +8,7 @@ const Navbar = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const { username, isAuthenticated, logout } = useAuth();
   const { cartItem } = useCart();
-  const [icon, setIcon ] = useState(false);
+  const [icon, setIcon] = useState(false);
 
   const navigate = useNavigate();
 
@@ -34,7 +34,10 @@ const Navbar = () => {
 
   return (
     <div className="relative w-full h-17.5 bg-primary flex justify-between items-center flex-row z-40">
-      <a href="/" className="flex items-center flex-row ml-5 gap-3">
+      <button
+        onClick={() => navigate("/")}
+        className="flex items-center flex-row ml-5 gap-3 cursor-pointer"
+      >
         <img
           src="/logo.png"
           alt="Shopify Logo"
@@ -43,7 +46,7 @@ const Navbar = () => {
         <h1 className="text-2xl text-white font-bold hidden md:block">
           Shopify
         </h1>
-      </a>
+      </button>
 
       {/* User Avatar & Dropdown */}
       {isAuthenticated ? (
