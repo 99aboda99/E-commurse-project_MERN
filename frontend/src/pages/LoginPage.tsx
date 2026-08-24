@@ -59,26 +59,32 @@ const LoginPage = () => {
       <section className="w-1/3 h-fit px-3 py-4 container mx-auto bg-white text-second-text rounded-xl shadow-md mt-10 font-medium">
         <h2 className="text-xl text-center mb-4">Login to your account</h2>
         <div className="flex flex-col gap-2.5">
-          <div>
-            <label className="block">Email</label>
+          <fieldset className="border border-gray-300 rounded-lg p-3 w-full focus-within:border-blue-500 transition-colors">
+            <legend className="px-2 text-sm text-gray-500 font-medium">
+              Email
+            </legend>
             <input
               ref={emailRef}
-              className="block border border-gray-500 rounded-md w-full font-normal p-1.5"
               type="email"
               name="email"
               id="email"
+              placeholder="Enter email address"
+              className="w-full px-2 py-1 outline-none text-gray-800 text-base font-normal"
             />
-          </div>
-          <div>
-            <label className="block">Password</label>
+          </fieldset>
+          <fieldset className="border border-gray-300 rounded-lg p-3 w-full focus-within:border-blue-500 transition-colors">
+            <legend className="px-2 text-sm text-gray-500 font-medium">
+              Password
+            </legend>
             <input
               ref={passwordRef}
-              className="block border border-gray-500 rounded-md w-full font-normal p-1.5"
               type="password"
               name="password"
               id="password"
+              placeholder="Enter password"
+              className="w-full px-2 py-1 outline-none text-gray-800 text-base font-normal"
             />
-          </div>
+          </fieldset>
           <button
             className="mt-4 py-2 bg-primary hover:bg-secondary active:scale-98 text-white rounded-md transition-all duration-300 cursor-pointer"
             type="submit"

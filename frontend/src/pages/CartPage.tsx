@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/Cart/CartContext";
 
 const CartPage = () => {
+  const navigate = useNavigate();
+
   const { cartItem, totalAmount, updateCartItem, deleteCartItem, clearCart } =
     useCart();
 
@@ -18,7 +21,7 @@ const CartPage = () => {
 
   return (
     <div className="w-4/5 m-auto bg-white py-5 mt-20 rounded-xl">
-      <div className="flex flex-row items-center justify-evenly">
+      <div className="flex flex-row items-center justify-around">
         <h1 className="text-center text-5xl">My Cart</h1>
         <button
           className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600 transition-all duration-300"
@@ -95,8 +98,9 @@ const CartPage = () => {
           </p>
         </div>
       ) : (
-        <div className="font-bold text-2xl ml-5 mt-10">
-          Total Amount: {totalAmount.toFixed(2)} EGP
+        <div className="flex flex-row items-center justify-around py-10">
+          <div className="font-bold text-2xl mb-2">Total Amount: {totalAmount.toFixed(2)} EGP</div>
+          <button onClick={() => navigate('/checkout')} className="bg-primary text-white p-2 rounded-xl hover:bg-secondary hover:text-text transition-all duration-300 cursor-pointer">Checkout</button>
         </div>
       )}
     </div>
