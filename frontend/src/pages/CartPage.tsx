@@ -21,14 +21,16 @@ const CartPage = () => {
 
   return (
     <div className="w-4/5 m-auto bg-white py-5 mt-20 rounded-xl">
-      <div className="flex flex-row items-center justify-around">
+      <div className="flex flex-row items-center justify-between px-10">
         <h1 className="text-center text-5xl">My Cart</h1>
-        <button
-          className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600 transition-all duration-300"
-          onClick={() => clearCart()}
-        >
-          Clear Cart
-        </button>
+        {cartItem.length > 0 && (
+          <button
+            className="bg-red-500 text-white p-2 rounded-xl hover:bg-red-600 transition-all duration-300"
+            onClick={() => clearCart()}
+          >
+            Clear Cart
+          </button>
+        )}
       </div>
       <br />
       {cartItem.map((item) => (
@@ -98,9 +100,16 @@ const CartPage = () => {
           </p>
         </div>
       ) : (
-        <div className="flex flex-row items-center justify-around py-10">
-          <div className="font-bold text-2xl mb-2">Total Amount: {totalAmount.toFixed(2)} EGP</div>
-          <button onClick={() => navigate('/checkout')} className="bg-primary text-white p-2 rounded-xl hover:bg-secondary hover:text-text transition-all duration-300 cursor-pointer">Checkout</button>
+        <div className="flex flex-row items-center justify-between py-10 px-10">
+          <div className="font-bold text-2xl mb-2">
+            Total Amount: {totalAmount.toFixed(2)} EGP
+          </div>
+          <button
+            onClick={() => navigate("/checkout")}
+            className="bg-primary text-white p-2 rounded-xl hover:bg-secondary hover:text-text transition-all duration-300 cursor-pointer"
+          >
+            Checkout
+          </button>
         </div>
       )}
     </div>

@@ -13,6 +13,15 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleCart = () => navigate("/cart");
+  const handleOrders = () => {
+    navigate("/orders");
+    setIsMenuOpen(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -91,7 +100,7 @@ const Navbar = () => {
             {isMenuOpen && (
               <div className="absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-md text-gray-800 rounded-2xl shadow-xl border border-gray-100 py-2 z-50 transition-all duration-200">
                 <button
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={handleOrders}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary rounded-xl mx-1 transition-colors cursor-pointer"
                 >
                   <svg
@@ -111,10 +120,7 @@ const Navbar = () => {
                 </button>
                 <div className="my-1 border-t border-gray-100" />
                 <button
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    logout();
-                  }}
+                  onClick={handleLogout}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl mx-1 transition-colors cursor-pointer"
                 >
                   <svg
