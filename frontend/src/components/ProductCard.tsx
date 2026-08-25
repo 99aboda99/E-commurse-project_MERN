@@ -11,7 +11,7 @@ const ProductCard = ({ _id, title, price, image }: ProductCardProps) => {
   const { addItemToCart } = useCart();
 
   return (
-    <div className="flex-1 grow shrink min-w-55 w-full sm:w-[calc(50%-0.75rem)] md:w-[calc(33.333%-0.75rem)] lg:w-[calc(25%-0.75rem)] xl:w-[calc(20%-0.75rem)] bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group border border-gray-100">
+    <div className="w-full bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between group border border-gray-100">
       <div className="relative w-full aspect-square overflow-hidden bg-gray-50 flex items-center justify-center p-3">
         <img
           src={image}

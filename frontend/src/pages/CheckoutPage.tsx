@@ -46,8 +46,8 @@ const CheckoutPage = () => {
 
   if (success) {
     return (
-      <div className="w-4/5 max-w-3xl m-auto bg-white py-12 px-8 mt-20 rounded-2xl shadow-md text-center">
-        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center m-auto mb-4">
+      <div className="w-full max-w-2xl mx-auto bg-white py-8 sm:py-12 px-4 sm:px-8 my-8 sm:my-16 rounded-2xl shadow-md text-center border border-gray-100">
+        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -63,10 +63,10 @@ const CheckoutPage = () => {
             />
           </svg>
         </div>
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
           Order Placed Successfully!
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-sm sm:text-base text-gray-600 mb-6">
           Thank you for your purchase. Redirecting to home page...
         </p>
       </div>
@@ -74,8 +74,8 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="w-4/5 max-w-3xl m-auto bg-white py-8 px-10 mt-20 rounded-xl">
-      <h1 className="text-4xl font-normal text-left text-gray-900 mb-6">
+    <div className="w-full max-w-3xl mx-auto bg-white py-6 sm:py-8 px-4 sm:px-8 my-6 sm:my-12 rounded-2xl shadow-sm border border-gray-100">
+      <h1 className="text-2xl sm:text-4xl font-bold text-left text-gray-900 mb-6 pb-4 border-b border-gray-100">
         Checkout
       </h1>
 
@@ -86,44 +86,44 @@ const CheckoutPage = () => {
       )}
 
       {/* Delivery Address Box */}
-      <fieldset className="border border-gray-300 rounded-lg p-3 mb-6 w-full focus-within:border-blue-500 transition-colors">
-        <legend className="px-2 text-sm text-gray-500 font-medium">
+      <fieldset className="border border-gray-300 rounded-xl p-3 mb-6 w-full focus-within:border-blue-500 transition-colors">
+        <legend className="px-2 text-xs sm:text-sm text-gray-500 font-medium">
           Delivery Address
         </legend>
         <input
           type="text"
           ref={addressRef}
           placeholder="Enter delivery address"
-          className="w-full px-2 py-1 outline-none text-gray-800 text-base"
+          className="w-full px-2 py-1 outline-none text-gray-800 text-sm sm:text-base"
         />
       </fieldset>
 
       {/* Cart Summary Box */}
-      <div className="border border-gray-200 rounded-2xl p-6 mb-6 w-full bg-white">
+      <div className="border border-gray-200 rounded-2xl p-4 sm:p-6 mb-6 w-full bg-gray-50/50">
         <div className="flex flex-col gap-4">
           {cartItem.map((item) => (
             <div
               key={item.productId}
-              className="flex flex-row justify-between items-center py-2"
+              className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2 gap-2 border-b border-gray-100 last:border-b-0 pb-3 sm:pb-2"
             >
-              <div className="flex flex-row items-center gap-4">
+              <div className="flex flex-row items-center gap-3">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-14 h-14 object-contain rounded-md"
+                  className="w-12 h-12 sm:w-14 sm:h-14 object-contain rounded-md bg-white p-1 shrink-0"
                 />
-                <p className="text-lg font-normal text-gray-800">
+                <p className="text-sm sm:text-base font-medium text-gray-800 line-clamp-2">
                   {item.title}
                 </p>
               </div>
-              <div className="text-base text-gray-700 font-normal">
+              <div className="text-sm sm:text-base text-gray-700 font-semibold self-end sm:self-auto shrink-0">
                 {item.quantity} x {item.unitPrice} EGP
               </div>
             </div>
           ))}
         </div>
 
-        <div className="border-t border-gray-100 mt-4 pt-4 text-right text-lg text-gray-800 font-normal">
+        <div className="border-t border-gray-200 mt-4 pt-4 text-right text-base sm:text-lg text-gray-900 font-bold">
           Total Amount: {totalAmount.toFixed(2)} EGP
         </div>
       </div>
@@ -132,7 +132,7 @@ const CheckoutPage = () => {
       <button
         onClick={handlePayNow}
         disabled={cartItem.length === 0}
-        className="w-full py-3.5 bg-primary hover:bg-secondary disabled:bg-gray-400 text-white font-medium text-base tracking-wider uppercase rounded-lg transition-all duration-200 cursor-pointer shadow-sm active:scale-[0.99] flex items-center justify-center"
+        className="w-full py-3.5 bg-primary hover:bg-secondary disabled:bg-gray-400 text-white font-semibold text-sm sm:text-base tracking-wider uppercase rounded-xl transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md active:scale-[0.99] flex items-center justify-center"
       >
         Pay Now
       </button>

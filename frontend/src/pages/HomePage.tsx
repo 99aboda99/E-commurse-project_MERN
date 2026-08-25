@@ -35,9 +35,9 @@ const HomePage = () => {
   }
 
   return (
-    <section className="max-w-7xl mx-auto flex flex-wrap gap-4 p-4 sm:p-6 justify-center sm:justify-start">
+    <section className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 p-4 sm:p-6">
       {products.map((product) => (
-        <ProductCard {...product} /> //This Spread equal key={product._id} title={product.title} price={product.price} image={product.image}
+        <ProductCard key={product._id} {...product} />
       ))}
     </section>
   );

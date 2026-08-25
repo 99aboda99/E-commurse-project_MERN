@@ -55,10 +55,10 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="w-full h-[90vh] flex justify-center items-center">
-      <section className="w-1/3 h-fit px-3 py-4 container mx-auto bg-white text-second-text rounded-xl shadow-md mt-10 font-medium">
-        <h2 className="text-xl text-center mb-4">Login to your account</h2>
-        <div className="flex flex-col gap-2.5">
+    <main className="w-full min-h-[calc(100vh-4.5rem)] flex justify-center items-center p-4 sm:p-6">
+      <section className="w-full max-w-md bg-white text-second-text rounded-2xl shadow-md p-6 font-medium">
+        <h2 className="text-xl sm:text-2xl text-center font-semibold mb-6">Login to your account</h2>
+        <div className="flex flex-col gap-3">
           <fieldset className="border border-gray-300 rounded-lg p-3 w-full focus-within:border-blue-500 transition-colors">
             <legend className="px-2 text-sm text-gray-500 font-medium">
               Email
@@ -86,14 +86,14 @@ const LoginPage = () => {
             />
           </fieldset>
           <button
-            className="mt-4 py-2 bg-primary hover:bg-secondary active:scale-98 text-white rounded-md transition-all duration-300 cursor-pointer"
+            className="mt-4 py-2.5 bg-primary hover:bg-secondary active:scale-98 text-white rounded-xl transition-all duration-300 cursor-pointer font-semibold shadow-sm hover:shadow-md"
             type="submit"
             onClick={onSubmit}
           >
             Login
           </button>
           {error && (
-            <div className="mt-2 text-red-500 text-center">{error}</div>
+            <div className="mt-2 text-red-500 text-center text-sm font-normal">{error}</div>
           )}
         </div>
       </section>

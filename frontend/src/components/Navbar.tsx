@@ -42,30 +42,31 @@ const Navbar = () => {
   });
 
   return (
-    <div className="relative w-full h-17.5 bg-primary flex justify-between items-center flex-row z-40">
+    <div className="relative w-full h-16 sm:h-17.5 bg-primary flex justify-between items-center px-3 sm:px-6 z-40">
       <button
         onClick={() => navigate("/")}
-        className="flex items-center flex-row ml-5 gap-3 cursor-pointer"
+        className="flex items-center gap-2 sm:gap-3 cursor-pointer focus:outline-none"
       >
         <img
           src="/logo.png"
           alt="Shopify Logo"
-          className="w-14 h-14 object-contain"
+          className="w-10 h-10 sm:w-14 sm:h-14 object-contain"
         />
-        <h1 className="text-2xl text-white font-bold hidden md:block">
+        <h1 className="text-xl sm:text-2xl text-white font-bold block">
           Shopify
         </h1>
       </button>
 
       {/* User Avatar & Dropdown */}
       {isAuthenticated ? (
-        <div className="flex flex-row">
+        <div className="flex items-center gap-1 sm:gap-3">
           <button
             onClick={handleCart}
-            className="relative text-white px-4 mr-1.5 hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none cursor-pointer"
+            className="relative text-white p-2 hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none cursor-pointer"
+            aria-label="View Cart"
           >
             <svg
-              className="w-4 h-4 sm:w-6 sm:h-6"
+              className="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -78,21 +79,21 @@ const Navbar = () => {
               />
             </svg>
             {icon && (
-              <div className="absolute right-0 top-0 h-5.5 w-5.5 rounded-full bg-white text-primary text-center font-medium">
+              <div className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-white text-primary text-xs flex items-center justify-center font-bold shadow-sm">
                 {cartItem.length}
               </div>
             )}
           </button>
-          <div className="relative mr-5" ref={menuRef}>
+          <div className="relative" ref={menuRef}>
             <button
               onClick={() => setIsMenuOpen((prev) => !prev)}
-              className="flex items-center gap-2 p-1.5 text-white hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none cursor-pointer"
+              className="flex items-center gap-2 p-1 text-white hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none cursor-pointer"
               aria-label="User Menu"
             >
-              <span className="text-center my-auto font-medium">
+              <span className="hidden sm:inline-block font-medium max-w-32 truncate">
                 {username}
               </span>
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-900 text-white font-bold shrink-0">
+              <div className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-red-900 text-white font-bold shrink-0">
                 {username ? username.charAt(0).toUpperCase() : "U"}
               </div>
             </button>
@@ -143,10 +144,10 @@ const Navbar = () => {
           </div>
         </div>
       ) : (
-        <div className="flex items-center gap-3 mr-5">
+        <div className="flex items-center gap-2 sm:gap-3">
           <a
             href="/login"
-            className="inline-flex items-center gap-2 bg-white text-gray-800 font-medium py-1.5 px-4 rounded-full hover:scale-105 transition-all duration-200 shadow-sm"
+            className="inline-flex items-center gap-1.5 bg-white text-gray-800 font-medium py-1.5 px-3 sm:px-4 rounded-full text-xs sm:text-sm hover:scale-105 transition-all duration-200 shadow-sm"
           >
             <svg
               className="w-4 h-4"
@@ -165,7 +166,7 @@ const Navbar = () => {
           </a>
           <a
             href="/register"
-            className="inline-flex items-center gap-2 bg-white text-gray-800 font-medium py-1.5 px-4 rounded-full hover:scale-105 transition-all duration-200 shadow-sm"
+            className="inline-flex items-center gap-1.5 bg-white text-gray-800 font-medium py-1.5 px-3 sm:px-4 rounded-full text-xs sm:text-sm hover:scale-105 transition-all duration-200 shadow-sm"
           >
             <svg
               className="w-4 h-4"
