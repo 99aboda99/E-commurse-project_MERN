@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { orderModel } from "../models/orderModel.js";
+import adminModel from "../models/adminModel.js";
 
 interface RegisterParams {
   firstName: string;
@@ -47,21 +48,36 @@ interface LoginParams {
 
 export const login = async ({ email, password }: LoginParams) => {
   const findUser = await userModel.findOne({ email });
-  if (!findUser) {
-    return { data: "Invalid email or password", status: 400 };
-  }
+  const findAdmin = await adminModel.findOne({ email });
 
-  const passwordMatch = await bcrypt.compare(password, findUser.password);
-  if (passwordMatch) {
-    return {
-      data: generateJWT({
-        _id: findUser._id,
-        firstName: findUser.firstName,
-        lastName: findUser.lastName,
-        email,
-      }),
-      status: 200,
-    };
+  if (findUser) {
+    const passwordMatch = await bcrypt.compare(password, findUser.password);
+    if (passwordMatch) {
+      return {
+        data: generateJWT({
+          _id: findUser._id,
+          firstName: findUser.firstName,
+          lastName: findUser.lastName,
+          email,
+        }),
+        status: 200,
+      };
+    }
+  } else if (findAdmin) {
+    const passwordMatch = await bcrypt.compare(password, findAdmin.password);
+    if (passwordMatch) {
+      return {
+        data: generateJWT({
+          _id: findAdmin._id,
+          firstName: findAdmin.firstName,
+          lastName: findAdmin.lastName,
+          email,
+        }),
+        status: 200,
+      };
+    }
+  } else {
+    return { data: "Invalid email or password", status: 400 };
   }
 
   return { data: "Invalid email or password", status: 400 };

@@ -1,21 +1,21 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface IUser extends Document {
+export interface IAdmin extends Document {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  role: "user";
+  role: "admin" | "owner";
 }
 
-const userSchema = new Schema<IUser>({
+const AdminSchema = new Schema<IAdmin>({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["user"] },
+  role: { type: String, enum: ["admin", "owner"] },
 });
 
-const userModel = mongoose.model<IUser>("User", userSchema);
+const adminModel = mongoose.model<IAdmin>("Admin", AdminSchema);
 
-export default userModel;
+export default adminModel;

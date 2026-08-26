@@ -40,10 +40,11 @@ router.get(
       const userId = request.user?._id;
       const { data, statusCode } = await getMyOrders({ userId });
       response.status(statusCode).json(data);
-    } catch {
-      response.status(500).send("Something went wrong");
+    } catch (error) {
+      response.status(500).send("Something went wrong" + error);
     }
   },
 );
+
 
 export default router;

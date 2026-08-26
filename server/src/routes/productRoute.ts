@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const products = await getAllProduct();
-    res.status(200).send(products);
+    const {data, statusCode} = await getAllProduct();
+    res.status(statusCode).send(data);
   } catch (error) {
     res.status(500).send({ message: "Something went wrong", error });
   }
