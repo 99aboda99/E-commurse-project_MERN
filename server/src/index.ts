@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import userRoute from "./routes/userRoute.js";
 import productRoute from "./routes/productRoute.js";
 import cartRoute from "./routes/cartRoute.js";
-import adminRouter from "./routes/adminRouter.js";
+import adminRouter from "./routes/adminRoute.js";
 
 import { seedInitialProducts } from "./services/productServices.js";
 

@@ -1,7 +1,6 @@
 import type { ExtendedRequest } from "../types/ExtendedRequest.js";
 import type { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import userModel from "../models/userModel.js";
 import adminModel from "../models/adminModel.js";
 
 export const adminJWTValidate = async(
@@ -24,7 +23,7 @@ export const adminJWTValidate = async(
   }
 
   jwt.verify(
-    token,process.env.JWT_SECRET_KEY || "",
+    token,process.env.JWT_ADMIN_SECRET_KEY || "",
     async (err, payload) => {
       if (err) {
         response.status(403).send("Invalid token");

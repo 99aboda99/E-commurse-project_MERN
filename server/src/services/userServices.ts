@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { orderModel } from "../models/orderModel.js";
 import adminModel from "../models/adminModel.js";
+import { generateAdminJWT } from "./adminServices.js";
 
 interface RegisterParams {
   firstName: string;
@@ -67,7 +68,7 @@ export const login = async ({ email, password }: LoginParams) => {
     const passwordMatch = await bcrypt.compare(password, findAdmin.password);
     if (passwordMatch) {
       return {
-        data: generateJWT({
+        data: generateAdminJWT({
           _id: findAdmin._id,
           firstName: findAdmin.firstName,
           lastName: findAdmin.lastName,
