@@ -18,8 +18,8 @@ export const seedInitialAdmin = async () => {
   const hashedAdminPassword = await bcrypt.hash(password, 10);
 
   const admin = {
-    firstName: "Admin",
-    lastName: "Admin",
+    firstName: "owner",
+    lastName: "owner",
     email,
     password: hashedAdminPassword,
     role: "owner" as const,
@@ -55,8 +55,8 @@ export const addNewAdmin = async ({
   email,
   password,
 }: AddNewAdminParams) => {
-  if(!firstName || !lastName || !email || !password) {
-    return{ data: "Missing required fields", statusCode: 400 }
+  if (!firstName || !lastName || !email || !password) {
+    return { data: "Missing required fields", statusCode: 400 };
   }
   const findAdmin = await adminModel.findOne({ email });
   if (findAdmin) {

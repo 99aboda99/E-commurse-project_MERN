@@ -37,6 +37,7 @@ export const register = async ({
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       email,
+      role: "user",
     }),
     status: 201,
   };
@@ -60,6 +61,7 @@ export const login = async ({ email, password }: LoginParams) => {
           firstName: findUser.firstName,
           lastName: findUser.lastName,
           email,
+          role: "user",
         }),
         status: 200,
       };
@@ -67,12 +69,25 @@ export const login = async ({ email, password }: LoginParams) => {
   } else if (findAdmin) {
     const passwordMatch = await bcrypt.compare(password, findAdmin.password);
     if (passwordMatch) {
+      if (findAdmin.role === "owner") {
+        return {
+          data: generateAdminJWT({
+            _id: findAdmin._id,
+            firstName: findAdmin.firstName,
+            lastName: findAdmin.lastName,
+            email,
+            role: "owner",
+          }),
+          status: 200,
+        };
+      }
       return {
         data: generateAdminJWT({
           _id: findAdmin._id,
           firstName: findAdmin.firstName,
           lastName: findAdmin.lastName,
           email,
+          role: "admin",
         }),
         status: 200,
       };

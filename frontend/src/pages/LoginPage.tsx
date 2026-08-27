@@ -9,14 +9,13 @@ const LoginPage = () => {
 
   const [error, setError] = useState("");
 
-  const { login } = useAuth();
+  const { login, decodeToken } = useAuth();
 
   const navigate = useNavigate();
 
   const onSubmit = async () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    console.log(email, password);
 
     //* Validate the user data
     if (!email || !password) {
@@ -49,15 +48,18 @@ const LoginPage = () => {
 
     login(email, token);
 
-    navigate('/')
+    navigate("/");
 
     console.log(token);
+    console.log(decodeToken(token));
   };
 
   return (
     <main className="w-full min-h-[calc(100vh-4.5rem)] flex justify-center items-center p-4 sm:p-6">
       <section className="w-full max-w-md bg-white text-second-text rounded-2xl shadow-md p-6 font-medium">
-        <h2 className="text-xl sm:text-2xl text-center font-semibold mb-6">Login to your account</h2>
+        <h2 className="text-xl sm:text-2xl text-center font-semibold mb-6">
+          Login to your account
+        </h2>
         <div className="flex flex-col gap-3">
           <fieldset className="border border-gray-300 rounded-lg p-3 w-full focus-within:border-blue-500 transition-colors">
             <legend className="px-2 text-sm text-gray-500 font-medium">
@@ -93,7 +95,9 @@ const LoginPage = () => {
             Login
           </button>
           {error && (
-            <div className="mt-2 text-red-500 text-center text-sm font-normal">{error}</div>
+            <div className="mt-2 text-red-500 text-center text-sm font-normal">
+              {error}
+            </div>
           )}
         </div>
       </section>

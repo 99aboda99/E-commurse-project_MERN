@@ -9,6 +9,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CartProvider from "./context/Cart/CartProvider";
 import CheckoutPage from "./pages/CheckoutPage";
 import MyOrderPage from "./pages/MyOrderPage";
+import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
@@ -24,6 +26,9 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/orders" element={<MyOrderPage />} />
+            </Route>
+            <Route element={<ProtectedAdminRoute/>}>
+              <Route path="/admin" element={<AdminPage/>}/>
             </Route>
           </Routes>
         </BrowserRouter>
